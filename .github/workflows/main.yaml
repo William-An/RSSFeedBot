@@ -42,6 +42,7 @@ jobs:
           [ -e email.html ] && echo "EMAIL_FILE=file://email.html" >> $GITHUB_ENV
           [ ! -e email.html ] && echo "EMAIL_SUBJECT=RSSFeedBot no recommendations $DATENOW " >> $GITHUB_ENV
           [ -e email.html ] && echo "EMAIL_SUBJECT=RSSFeedBot new recommendations $DATENOW " >> $GITHUB_ENV
+          echo "Done"
       - name: Send email
         uses: dawidd6/action-send-mail@v4
         with:
