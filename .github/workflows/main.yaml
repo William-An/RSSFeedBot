@@ -30,6 +30,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
       - name: Dump RSS links to file
         run: echo ${{ vars.FEED_LINKS }} | tr ',' '\n' | tee feeds.txt
       - name: Run recommendation
