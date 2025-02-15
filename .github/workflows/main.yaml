@@ -36,8 +36,12 @@ jobs:
         run: echo ${{ vars.FEED_LINKS }} | tr ',' '\n' | tee feeds.txt
       - name: Run recommendation
         run: FEEDS_FILE=./feeds.txt python3 $GITHUB_WORKSPACE/main.py
-      - name: Set current date as env variable
-        run: echo "DATENOW=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+      - name: Prepare email
+        run: |
+          DATENOW=$(date +'%Y-%m-%dT%H:%M:%S')
+          [ -e email.html ] && echo "EMAIL_FILE=file://email.html" >> $GITHUB_ENV
+          [ ! -e email.html ] && echo "EMAIL_SUBJECT=RSSFeedBot no recommendations $DATENOW " >> $GITHUB_ENV
+          [ -e email.html ] && echo "EMAIL_SUBJECT=RSSFeedBot new recommendations $DATENOW " >> $GITHUB_ENV
       - name: Send email
         uses: dawidd6/action-send-mail@v4
         with:
@@ -52,13 +56,13 @@ jobs:
           # Optional (recommended) mail server password:
           password: ${{secrets.MAIL_PASSWORD}}
           # Required mail subject:
-          subject: RSSFeedBot Recommendation ${{ env.DATENOW }}
+          subject: ${{ env.EMAIL_SUBJECT }}
           # Required recipients' addresses:
           to: ${{ secrets.MAIL_RECIPIENTS }}
           # Required sender full name (address can be skipped):
           from: RSSFeedBot # <user@example.com>
           # Optional HTML body read from file:
-          html_body: file://email.html
+          html_body: ${{ env.EMAIL_FILE }}
           # Optional unsigned/invalid certificates allowance:
           ignore_cert: false
           # Optional converting Markdown to HTML (set content_type to text/html too):
