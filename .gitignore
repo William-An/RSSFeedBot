@@ -1,0 +1,8 @@
+.DS_Store
+.DS_store
+.vscode
+*.pyc
+venv/
+__pycache__/
+*.tmp
+*.feeds
