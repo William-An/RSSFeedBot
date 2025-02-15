@@ -101,11 +101,14 @@ with open(feeds_file, "r") as f:
                 emailBody += item.toHTML()
         
 if emailBody:
+    print("Dumping the following email body to ./email.html")
     print(emailBody)
+    with open('./email.html', 'w') as f:
+        print(emailBody, file=f)
 
 if discardedItems:
     print("Here are the discarded items:")
     for item in discardedItems:
-        print(item.toStr(), file=sys.stderr)
+        print(item.toStr())
         
 print(f"Done processing {feeds_file} at {datetime.datetime.now()}")

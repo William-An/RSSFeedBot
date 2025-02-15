@@ -36,3 +36,37 @@ jobs:
         run: echo ${{ vars.FEED_LINKS }} | tr ',' '\n' | tee feeds.txt
       - name: Run recommendation
         run: FEEDS_FILE=./feeds.txt python3 $GITHUB_WORKSPACE/main.py
+      - name: Set current date as env variable
+        run: echo "DATENOW=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+      - name: Send email
+        with: dawidd6/action-send-mail@v4
+        # Required mail server address if not connection_url:
+        server_address: smtp.gmail.com
+        # Server port, default 25:
+        server_port: 465
+        # Optional whether this connection use TLS (default is true if server_port is 465)
+        secure: true
+        # Optional (recommended) mail server username:
+        username: ${{secrets.MAIL_USERNAME}}
+        # Optional (recommended) mail server password:
+        password: ${{secrets.MAIL_PASSWORD}}
+        # Required mail subject:
+        subject: RSSFeedBot Recommendation ${{ env.DATENOW }}
+        # Required recipients' addresses:
+        to: ${{ secrets.MAIL_RECIPIENTS }}
+        # Required sender full name (address can be skipped):
+        from: RSSFeedBot # <user@example.com>
+        # Optional HTML body read from file:
+        html_body: file://email.html
+        # Optional unsigned/invalid certificates allowance:
+        ignore_cert: true
+        # Optional converting Markdown to HTML (set content_type to text/html too):
+        convert_markdown: true
+        # Optional attachments:
+        attachments: attachments.zip,git.diff,./dist/static/*.js
+        # Optional priority: 'high', 'normal' (default) or 'low'
+        priority: normal
+        # Optional nodemailerlog: true/false
+        nodemailerlog: false
+        # Optional nodemailerdebug: true/false if true lognodem will also be set true
+        nodemailerdebug: false
