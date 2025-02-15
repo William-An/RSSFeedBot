@@ -60,14 +60,12 @@ jobs:
           # Optional HTML body read from file:
           html_body: file://email.html
           # Optional unsigned/invalid certificates allowance:
-          ignore_cert: true
+          ignore_cert: false
           # Optional converting Markdown to HTML (set content_type to text/html too):
           convert_markdown: true
-          # Optional attachments:
-          attachments: attachments.zip,git.diff,./dist/static/*.js
           # Optional priority: 'high', 'normal' (default) or 'low'
           priority: normal
           # Optional nodemailerlog: true/false
-          nodemailerlog: false
+          nodemailerlog: true
           # Optional nodemailerdebug: true/false if true lognodem will also be set true
-          nodemailerdebug: false
+          nodemailerdebug: true
